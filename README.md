@@ -4,4 +4,4 @@
 4. limit util 추가 ? ~~아직 까지는 어떤 용도로 사용하는지 파악이 안됨~~
 5. omitSlug util 추가 Slug 생략 util
 6. activePath util 추가 정규식을 이용하여 path 체크
-7. 
+7. api 기능 추가
