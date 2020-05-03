@@ -8,7 +8,7 @@ const FAVORITED_CLASS = "btn btn-sm btn-primary";
 const NOT_FAVORITED_CLASS = "btn btn-sm btn-outline-primary";
 
 const ArticlePreview = ({ article }) => {
-  const handleClickFavorite = e => {
+  const handleClickFavorite = (e) => {
     e.preventDefault();
     if (article.favorited) {
       api.Articles.unfavorite(article.slug);
@@ -46,12 +46,16 @@ const ArticlePreview = ({ article }) => {
         </div>
       </div>
 
-      <CustomLink href={`/article/${article.slug}`} className="preview-link">
+      <CustomLink
+        href={`/article/[pid]`}
+        as={`/article/${article.slug}`}
+        className="preview-link"
+      >
         <h1>{article.title}</h1>
         <p>{article.description}</p>
         <span>Read more...</span>
         <ul className="tag-list">
-          {article.tagList.map(tag => {
+          {article.tagList.map((tag) => {
             return (
               <li className="tag-default tag-pill tag-outline" key={tag}>
                 {tag}

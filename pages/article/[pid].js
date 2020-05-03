@@ -11,16 +11,19 @@ import { SERVER_BASE_URL } from "../../lib/utils/constant";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
 import CommentList from "../../components/comment/CommentList";
 
-const Article = ({ data: initialData }) => {
+const Article = ({ articleData, articleError, isClient }) => {
   const router = useRouter();
   const {
-    query: { pid }
+    query: { pid },
   } = router;
 
-  const {
-    data: articleData,
-    error: articleError
-  } = useSWR(`${SERVER_BASE_URL}/articles/${pid}`, fetcher, { initialData });
+  const { data, error } = useSWR(
+    `${SERVER_BASE_URL}/articles/${pid}`,
+    fetcher,
+    { initialData: articleData }
+  );
+  articleData = data;
+  articleError = error;
 
   if (!articleData) {
     return <LoadingSpinner />;
@@ -31,7 +34,7 @@ const Article = ({ data: initialData }) => {
   const { article } = articleData;
 
   const markup = {
-    __html: marked(article.body, { sanitize: true })
+    __html: marked(article.body, { sanitize: true }),
   };
 
   return (
@@ -39,6 +42,7 @@ const Article = ({ data: initialData }) => {
       <div className="banner">
         <div className="container">
           <h1>{article.title}</h1>
+          <h2>{isClient ? "CSR" : "SSR"}</h2>
           <ArticleMeta article={article} />
         </div>
       </div>
@@ -48,7 +52,7 @@ const Article = ({ data: initialData }) => {
           <div className="col-xs-12">
             <div dangerouslySetInnerHTML={markup} />
             <ul className="tag-list">
-              {article.tagList.map(tag => (
+              {article.tagList.map((tag) => (
                 <li key={tag} className="tag-default tag-pill tag-outline">
                   {tag}
                 </li>
@@ -71,9 +75,18 @@ const Article = ({ data: initialData }) => {
   );
 };
 
-Article.getInitialProps = async ({ query: { pid } }) => {
-  const { data } = await api.Articles.get(pid);
-  return { data };
+Article.getInitialProps = async ({ req, query }) => {
+  if (!req) {
+    return {
+      isClient: true,
+    };
+  }
+  const { pid } = query;
+  const articleData = await api.Articles.get(pid);
+  return {
+    articleData,
+    isClient: false,
+  };
 };
 
 export default Article;

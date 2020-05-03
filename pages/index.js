@@ -6,6 +6,7 @@ import Tags from "../components/home/Tags";
 import api from "../lib/api";
 import fetcher from "../lib/utils/fetcher";
 import { SERVER_BASE_URL, APP_NAME } from "../lib/utils/constant";
+import Link from "next/link";
 
 const Home = ({ data: initialData }) => {
   const [token, setToken] = React.useState("");
@@ -22,7 +23,6 @@ const Home = ({ data: initialData }) => {
   return (
     <div className="home-page">
       <Banner token={token} appName={APP_NAME} />
-
       <div className="container page">
         <div className="row">
           <MainView />
