@@ -13,7 +13,7 @@
     "classnames": "^2.2.6",
     "isomorphic-unfetch": "^3.0.0",
     "lazysizes": "^5.2.0",
-    "marked": "^1.0.0",
+    "marked": "^1.1.0",
     "next": "9.3.6",
     "path-to-regexp": "^6.1.0",
     "react": "16.13.1",
